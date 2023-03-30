@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const dotenv = require('dotenv');
 const path = require('path');
+const helmet = require('helmet');
+const hpp = require('hpp');
 
 const postRouter = require("./routes/post");
 const postsRouter = require('./routes/posts');
@@ -18,12 +20,20 @@ const app = express();
 db.sequelize.sync().then(() => {console.log('db연결 성공!')}).catch(console.error);
 passportConfig();
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(morgan('combined'));
+  app.use(hpp());
+  app.use(helmet());
+} else {
+  app.use(morgan('dev'));
+}
+
 app.use('/', express.static(path.join(__dirname, 'uploads'))); // '/'는 localhost:3065/ 일 때
 // 프론트에서는 서버쪽 폴더구조를 몰라서 보안에 이점이 있다.
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  origin: true,
+  origin: ['http://localhost:3060', 'nodebird.com'],
   credentials: true,
 }));
 app.use(cookieParser(process.env.SECRET_KEY)); // 쿠키문자열을 객체로 만들어주는 역할
