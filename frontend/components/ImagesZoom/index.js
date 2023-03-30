@@ -7,6 +7,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import {
   OverLay, Header, SlickWrapper, ImgWrapper, Indicator,
 } from './style';
+import { backUrl } from '../../config/config';
 
 function ImagesZoom({ images, onClose }) {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -27,7 +28,7 @@ function ImagesZoom({ images, onClose }) {
           >
             {images.map((v) => (
               <ImgWrapper key={v.src}>
-                <img src={`http://localhost:3065/${v.src}`} alt={v.src} />
+                <img src={`${backUrl}/${v.src}`} alt={v.src} />
               </ImgWrapper>
             ))}
           </Slider>
