@@ -34,7 +34,7 @@ app.use('/', express.static(path.join(__dirname, 'uploads'))); // '/'는 localho
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  origin: ['http://localhost:3060', 'nodebird.com', 'http://13.209.83.124'],
+  origin: ['http://localhost:3060', 'nodebird.com', 'http://3.35.188.1'],
   credentials: true,
 }));
 app.use(cookieParser(process.env.SECRET_KEY)); // 쿠키문자열을 객체로 만들어주는 역할
