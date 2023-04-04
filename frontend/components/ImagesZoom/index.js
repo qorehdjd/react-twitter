@@ -7,7 +7,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import {
   OverLay, Header, SlickWrapper, ImgWrapper, Indicator,
 } from './style';
-import { backUrl } from '../../config/config';
 
 function ImagesZoom({ images, onClose }) {
   const [currentSlide, setCurrentSlide] = useState(0);
