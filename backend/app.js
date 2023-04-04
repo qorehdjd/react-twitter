@@ -46,6 +46,7 @@ app.use(session({
     httpOnly: true, // 스크립트 공격 방어 (XSS)
     sameSite: 'none',
     secure: true,
+    domain: process.env.NODE_ENV === 'production' && '.reacttwitter.shop'
   }
 }));
 app.use(passport.initialize());
