@@ -164,7 +164,7 @@ router.post('/images', isLoggedIn, upload.array('image'), async (req, res, next)
   // const Image = await Image.create({
   //   src: req.files.map(v => v.filename)
   // });
-  res.json(req.files.map(v => v.location));
+  res.json(req.files.map(v => v.location.replace(/\/original\//, '/thumb/')));
 })
 
 router.post('/:postId/retweet', isLoggedIn, async (req, res, next) => {
