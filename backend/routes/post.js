@@ -25,12 +25,12 @@ AWS.config.update({
 const upload = multer({
   storage: multerS3({
     s3: new AWS.S3(),
+    bucket: 'react-twitter',
+    key(req, file, cb) {
+      cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
+    }
   }),
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
-  bucket: 'react-twitter',
-  key(req, file, cb) {
-    cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
-  }
 });
 
 router.post('/', isLoggedIn, upload.none(), async(req, res, next) => {
