@@ -17,11 +17,10 @@ const loggerMiddleware = ({ dispatch, getState }) => (next) => (action) => {
 
 const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware();
-  const middlewares = [sagaMiddleware, loggerMiddleware];
   const enhancer = process.env.NODE_ENV === 'production'
-    ? compose(applyMiddleware(...middlewares))
+    ? compose(applyMiddleware(sagaMiddleware))
   // devtool 연결 안함 이유)history가 쌓이면서 메모리도 잡아먹고 데이터가 다보이므로 보안에 취약
-    : composeWithDevTools(applyMiddleware(...middlewares)); // devtool 연결
+    : composeWithDevTools(applyMiddleware(sagaMiddleware, loggerMiddleware)); // devtool 연결
   const store = createStore(reducer, enhancer);
   store.sagaTask = sagaMiddleware.run(rootSaga);
   return store;
