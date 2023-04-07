@@ -21,8 +21,8 @@ const app = express();
 db.sequelize.sync().then(() => {console.log('db연결 성공!')}).catch(console.error);
 passportConfig();
 
-app.set('trush proxy', 1);
 if (process.env.NODE_ENV === 'production') {
+  app.set('trush proxy', 1);
   app.use(morgan('combined'));
   app.use(hpp());
   app.use(helmet());
