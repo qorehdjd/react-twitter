@@ -69,6 +69,6 @@ app.use('/hashtag', hashtagRouter);
 
 // }) 에러처리미들웨어가 내부적으로 존재한다.
 
-app.listen(3060, () => {
+app.listen(3065, () => {
   console.log("서버 실행중");
 })
