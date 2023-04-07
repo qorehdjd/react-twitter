@@ -43,6 +43,7 @@ app.use(session({
   secret: process.env.SECRET_KEY,
   resave: false,
   saveUninitialized: false,
+  proxy: true,
   cookie: {
     httpOnly: true, // 스크립트 공격 방어 (XSS)
     sameSite: 'none',
