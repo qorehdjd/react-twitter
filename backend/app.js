@@ -34,7 +34,7 @@ app.use('/', express.static(path.join(__dirname, 'uploads'))); // '/'는 localho
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  origin: ['http://localhost:3060', 'https://reacttwitter.shop', 'http://3.38.151.241'],
+  origin: ['http://localhost:3060', 'http://reacttwitter.shop', 'http://3.38.151.241'],
   credentials: true,
 }));
 app.use(cookieParser(process.env.SECRET_KEY)); // 쿠키문자열을 객체로 만들어주는 역할
@@ -69,6 +69,6 @@ app.use('/hashtag', hashtagRouter);
 
 // }) 에러처리미들웨어가 내부적으로 존재한다.
 
-app.listen(80, () => {
+app.listen(3060, () => {
   console.log("서버 실행중");
 })
