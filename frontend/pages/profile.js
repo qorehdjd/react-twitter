@@ -20,7 +20,7 @@ function Profile() {
   const [followingsLimit, setFollowingsLimit] = useState(3);
 
   const { data: followersData, error: followerError } = useSWR(`https://api.reacttwitter.shop/user/followers?limit=${followersLimit}`, fetcher);
-  const { data: followingsData, error: followingError } = useSWR(`https://api.reacttwitter.shop/followings?limit=${followingsLimit}`, fetcher);
+  const { data: followingsData, error: followingError } = useSWR(`https://api.reacttwitter.shop/user/followings?limit=${followingsLimit}`, fetcher);
 
   useEffect(() => {
     if (!(me && me.id)) {
