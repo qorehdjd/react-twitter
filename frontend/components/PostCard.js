@@ -1,7 +1,7 @@
 import {
   Card, Popover, Button, Avatar, List, Comment,
 } from 'antd';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   RetweetOutlined,
@@ -19,6 +19,7 @@ import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
 import { LIKE_POST_REQUEST, REMOVE_POST_REQUEST, RETWEET_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post';
 import FollowButton from './FollowButton';
+import EditPostCard from './EditPostCard';
 
 moment.locale('ko');
 
@@ -30,6 +31,11 @@ function PostCard({ post }) {
   const { removePostLoading } = useSelector((state) => state.post);
 
   const [commentFormOpend, setCommentFormOpend] = useState(false);
+  const [editPostCardOpend, setEditPostCardOpend] = useState(false);
+
+  useEffect(() => { // 로그인 했을 떄 수정페이지 띄우고 로그아웃시 수정페이지 닫기
+    setEditPostCardOpend(false);
+  }, [id]);
 
   const onClickRetweet = useCallback(() => {
     if (!id) {
@@ -65,14 +71,20 @@ function PostCard({ post }) {
     setCommentFormOpend((prev) => !prev);
   }, []);
 
+  const onToggleEditPostCard = useCallback(() => {
+    setEditPostCardOpend((prev) => !prev);
+  }, []);
+
   const onRemovePost = useCallback(() => {
     if (!id) {
       return alert('로그인이 필요합니다.');
     }
-    dispatch({
-      type: REMOVE_POST_REQUEST,
-      data: { postId: post.id },
-    });
+    if (window.confirm('정말로 삭제하시겠습니까?')) {
+      dispatch({
+        type: REMOVE_POST_REQUEST,
+        data: { postId: post.id },
+      });
+    }
   }, [id]);
 
   return (
@@ -97,7 +109,7 @@ function PostCard({ post }) {
               <Button.Group>
                 {id && post.User.id === id ? (
                   <>
-                    <Button>수정</Button>
+                    <Button onClick={onToggleEditPostCard}>수정</Button>
                     <Button type="danger" loading={removePostLoading} onClick={onRemovePost}>삭제</Button>
                   </>
                 ) : (
@@ -131,7 +143,7 @@ function PostCard({ post }) {
               <Card.Meta
                 avatar={<Link href={`/user/${post.User.id}`} prefetch={false}><Avatar>{post.User.nickname[0]}</Avatar></Link>}
                 title={post.User.nickname}
-                description={<PostCardContent postData={post.content} />}
+                description={editPostCardOpend ? <EditPostCard setEditPostCardOpend={setEditPostCardOpend} post={post} /> : <PostCardContent postData={post.content} />}
               />
             </>
           )}

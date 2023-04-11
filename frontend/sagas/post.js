@@ -35,7 +35,10 @@ import {
   LOAD_USER_POSTS_FAILURE,
   LOAD_HASHTAG_POSTS_REQUEST,
   LOAD_HASHTAG_POSTS_SUCCESS,
-  LOAD_HASHTAG_POSTS_FAILURE } from '../reducers/post';
+  LOAD_HASHTAG_POSTS_FAILURE,
+  EDIT_POST_CARD_REQUEST,
+  EDIT_POST_CARD_FAILURE,
+  EDIT_POST_CARD_SUCCESS } from '../reducers/post';
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
 function loadPostsAPI(lastId) {
@@ -262,6 +265,26 @@ function* retweet(action) {
   }
 }
 
+function editPostCardAPI(data) {
+  return axios.patch(`/post/${data.postId}`, data);
+}
+
+function* editPostCard(action) {
+  try {
+    const result = yield call(editPostCardAPI, action.data);
+    yield put({
+      type: EDIT_POST_CARD_SUCCESS,
+      data: result.data,
+    });
+  } catch (e) {
+    console.error(e);
+    yield put({
+      type: EDIT_POST_CARD_FAILURE,
+      error: e.response.data,
+    });
+  }
+}
+
 function* watchLoadPosts() {
   yield takeLatest(LOAD_POSTS_REQUEST, loadPosts);
 }
@@ -306,9 +329,13 @@ function* watchRetweet() {
   yield takeLatest(RETWEET_REQUEST, retweet);
 }
 
+function* watchEditPostCard() {
+  yield takeLatest(EDIT_POST_CARD_REQUEST, editPostCard);
+}
+
 export default function* postSaga() {
   yield all([fork(watchLoadPosts), fork(watchAddPost), fork(watchRemovePost),
     fork(watchAddComment), fork(watchLikePost), fork(watchUnlikePost),
     fork(watchUploadImages), fork(watchRetweet), fork(watchLoadPost),
-    fork(watchLoadUserPosts), fork(watchLoadHashtagPosts)]);
+    fork(watchLoadUserPosts), fork(watchLoadHashtagPosts), fork(watchEditPostCard)]);
 }

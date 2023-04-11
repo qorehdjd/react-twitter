@@ -41,6 +41,9 @@ export const initialState = {
   retweetLoading: false,
   retweetDone: false,
   retweetError: false,
+  editPostCardLoading: false,
+  editPostCardDone: false,
+  editPostCardError: false,
 };
 
 // initialState.mainPosts = initialState.mainPosts.concat(generateDummyPost(10));
@@ -90,6 +93,10 @@ export const REMOVE_IMAGE = 'REMOVE_IMAGE'; // 이미지는 자산이기떄문�
 export const RETWEET_REQUEST = 'RETWEET_REQUEST';
 export const RETWEET_SUCCESS = 'RETWEET_SUCCESS';
 export const RETWEET_FAILURE = 'RETWEET_FAILURE';
+
+export const EDIT_POST_CARD_REQUEST = 'EDIT_POST_CARD_REQEUST';
+export const EDIT_POST_CARD_SUCCESS = 'EDIT_POST_CARD_SUCCESS';
+export const EDIT_POST_CARD_FAILURE = 'EDIT_POST_CARD_FAILURE';
 
 export const addPost = (data) => ({
   type: ADD_POST_REQUEST,
@@ -269,6 +276,22 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case RETWEET_FAILURE:
       draft.retweetLoading = false;
       draft.retweetError = action.error;
+      break;
+    case EDIT_POST_CARD_REQUEST:
+      draft.editPostCardLoading = true;
+      draft.editPostCardDone = false;
+      draft.editPostCardError = false;
+      break;
+    case EDIT_POST_CARD_SUCCESS: {
+      const postIndex = draft.mainPosts.findIndex((v) => v.id === action.data.postId);
+      draft.mainPosts[postIndex] = action.data;
+      draft.editPostCardLoading = false;
+      draft.editPostCardDone = true;
+      break;
+    }
+    case EDIT_POST_CARD_FAILURE:
+      draft.editPostCardLoading = false;
+      draft.editPostCardError = action.error;
       break;
     default:
       break;

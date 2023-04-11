@@ -272,4 +272,21 @@ router.get('/:postId', async (req, res, next) => {
   }
 })
 
+router.patch('/:postId', isLoggedIn, async (req, res, next) => {
+  try {
+    const post = await Post.update({
+      content: req.body.textArea
+    }, {
+      where: { id: req.body.postId }
+    });
+    if (!post) {
+      return res.status(403).send('존재하지 않는 게시글입니다.');
+    }
+    return res.status(200).json({postId: req.body.postId}) 
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+});
+
 module.exports = router;
