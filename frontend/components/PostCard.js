@@ -28,7 +28,7 @@ function PostCard({ post }) {
 
   const id = useSelector((state) => state.user.me?.id);
   const liked = post.Likers.find((v) => v.id === id);
-  const { removePostLoading } = useSelector((state) => state.post);
+  const { removePostLoading, editPostCardLoading, editPostCardDone } = useSelector((state) => state.post);
 
   const [commentFormOpend, setCommentFormOpend] = useState(false);
   const [editPostCardOpend, setEditPostCardOpend] = useState(false);
@@ -36,6 +36,10 @@ function PostCard({ post }) {
   useEffect(() => { // 로그인 했을 떄 수정페이지 띄우고 로그아웃시 수정페이지 닫기
     setEditPostCardOpend(false);
   }, [id]);
+
+  useEffect(() => {
+    if (editPostCardDone) setEditPostCardOpend(false);
+  }, [editPostCardDone]);
 
   const onClickRetweet = useCallback(() => {
     if (!id) {
