@@ -302,7 +302,8 @@ function PostCard({
   const id = (0,react_redux__WEBPACK_IMPORTED_MODULE_3__.useSelector)(state => state.user.me?.id);
   const liked = post.Likers.find(v => v.id === id);
   const {
-    removePostLoading
+    removePostLoading,
+    editPostCardDone
   } = (0,react_redux__WEBPACK_IMPORTED_MODULE_3__.useSelector)(state => state.post);
   const {
     0: commentFormOpend,
@@ -316,6 +317,9 @@ function PostCard({
     // 로그인 했을 떄 수정페이지 띄우고 로그아웃시 수정페이지 닫기
     setEditPostCardOpend(false);
   }, [id]);
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    if (editPostCardDone) setEditPostCardOpend(false);
+  }, [editPostCardDone]);
   const onClickRetweet = (0,react__WEBPACK_IMPORTED_MODULE_1__.useCallback)(() => {
     if (!id) {
       return alert('로그인이 필요합니다.');

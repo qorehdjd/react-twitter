@@ -28,7 +28,7 @@ function PostCard({ post }) {
 
   const id = useSelector((state) => state.user.me?.id);
   const liked = post.Likers.find((v) => v.id === id);
-  const { removePostLoading, editPostCardLoading, editPostCardDone } = useSelector((state) => state.post);
+  const { removePostLoading, editPostCardDone } = useSelector((state) => state.post);
 
   const [commentFormOpend, setCommentFormOpend] = useState(false);
   const [editPostCardOpend, setEditPostCardOpend] = useState(false);
