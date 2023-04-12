@@ -274,15 +274,20 @@ router.get('/:postId', async (req, res, next) => {
 
 router.patch('/:postId', isLoggedIn, async (req, res, next) => {
   try {
-    const post = await Post.update({
-      content: req.body.textArea
+    const hashtags = req.body.textArea.match(/#[^\s#]+/g);
+    await Post.update({ // update는 객체를 돌려주지 않는다.
+      content: req.params.textArea
     }, {
-      where: { id: req.body.postId }
+      where: { id: req.params.postId, UserId: req.user.id }
     });
-    if (!post) {
-      return res.status(403).send('존재하지 않는 게시글입니다.');
+    const post = await Post.findOne({where: { id: req.params.postId }});
+    if (hashtags) {
+      const result = await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({
+        where: { name: tag.slice(1).toLowerCase() },
+      })));
+      await post.setHashtags(result.map(v => v[0])); // set은 기존꺼 다 날리고 새롭게 설정한다. add같은경우는 추가
     }
-    return res.status(200).json({postId: req.body.postId}) 
+    return res.status(200).json({postId: Number(req.body.postId), content: req.body.textArea}) 
   } catch (e) {
     console.error(e);
     next(e);

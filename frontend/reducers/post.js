@@ -284,7 +284,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case EDIT_POST_CARD_SUCCESS: {
       const postIndex = draft.mainPosts.findIndex((v) => v.id === action.data.postId);
-      draft.mainPosts[postIndex] = action.data;
+      draft.mainPosts[postIndex].content = action.data.content;
       draft.editPostCardLoading = false;
       draft.editPostCardDone = true;
       break;

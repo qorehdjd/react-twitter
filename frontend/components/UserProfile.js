@@ -39,7 +39,7 @@ function UserProfile() {
       ]}
     >
       <Card.Meta
-        avatar={<Link href={`/user/${me.id}`}><Avatar>{me.nickname[0]}</Avatar></Link>}
+        avatar={<Link href={`/user/${me.id}`} prefetch={false}><Avatar>{me.nickname[0]}</Avatar></Link>}
         title={me.nickname}
       />
       <LogOutButton onClick={onLogOut} loading={logOutLoading}>
